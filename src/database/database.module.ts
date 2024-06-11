@@ -1,18 +1,11 @@
 import { Module } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
   imports: [
-    TypeOrmModule.forRootAsync({
-      useFactory: (configService: ConfigService) => ({
-        type: 'postgres',
-        url: configService.getOrThrow('DATABASE_URL'),
-        autoLoadEntities: true,
-        synchronize: configService.getOrThrow('POSTGRES_SYNCHRONIZE'),
-      }),
-      inject: [ConfigService],
-    }),
+    MongooseModule.forRoot(
+      'mongodb+srv://root:Nd1MKM0YXM2cdjW9@tm-cluster.kkfs3yn.mongodb.net/?retryWrites=true&w=majority&appName=tm-cluster',
+    ),
   ],
 })
 export class DatabaseModule {}

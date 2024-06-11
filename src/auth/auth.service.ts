@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UsersService } from '../users/users.service';
 import * as bcrypt from 'bcryptjs';
+import { UsersService } from '../users/users.service';
 import { CreateUserDto } from '../users/dto/create-user.dto';
-import { User } from '../users/entities/user.entity';
+import { AuthDto } from './dto/auth.dto';
+import { UserDocument } from 'src/users/schemas/user.schema';
 
 @Injectable()
 export class AuthService {
@@ -13,22 +14,24 @@ export class AuthService {
   ) {}
 
   async register(user: CreateUserDto) {
-    // create user in db
-    const hashedPassword = await bcrypt.hash(user.password, 10);
-    const dbUser = await this.usersService.create({
-      ...user,
-      password: hashedPassword,
-    });
+    const dbUser = await this.usersService.create(user);
 
     // generate jwt token
-    const payload = { username: dbUser.username, userId: dbUser.id };
+    const payload = { email: dbUser.email, userId: dbUser.id };
     const accessToken = this.jwtService.sign(payload);
 
-    return { access_token: accessToken };
+    return { accessToken: accessToken };
   }
 
-  async validateUser(username: string, pass: string): Promise<any> {
-    const user = await this.usersService.findOne(username);
+  async login(user: UserDocument) {
+    const payload = { email: user.email, userId: user.id };
+    return {
+      access_token: this.jwtService.sign(payload),
+    };
+  }
+
+  async validateUser(email: string, pass: string): Promise<any> {
+    const user = await this.usersService.findOneByEmail(email);
     if (user && (await bcrypt.compare(pass, user.password))) {
       const { password, ...result } = user;
       return result;
@@ -36,14 +39,10 @@ export class AuthService {
     return null;
   }
 
-  async login(user: User) {
-    const payload = { username: user.username, userId: user.id };
-    return {
-      access_token: this.jwtService.sign(payload),
-    };
-  }
-
-  async validateToken(token: string) {
+  private async validateToken(token: string) {
     return this.jwtService.verify(token);
+  }
+  private async signToken(payload: { email: string; userId: string }) {
+    return this.jwtService.sign(payload);
   }
 }

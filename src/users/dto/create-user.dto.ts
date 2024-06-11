@@ -8,7 +8,7 @@ export class CreateUserDto {
     example: 'user1',
     required: true,
   })
-  username: string;
+  email: string;
 
   @IsString()
   @IsNotEmpty()

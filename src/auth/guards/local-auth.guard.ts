@@ -4,7 +4,7 @@ import {
   ExecutionContext,
   UnauthorizedException,
 } from '@nestjs/common';
-import { AuthService } from './auth.service';
+import { AuthService } from '../auth.service';
 import { Request } from 'express';
 
 @Injectable()
@@ -13,13 +13,13 @@ export class LocalAuthGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest<Request>();
-    const { username, password } = request.body;
+    const { email, password } = request.body;
 
-    if (!username || !password) {
-      throw new UnauthorizedException('Username and password are required');
+    if (!email || !password) {
+      throw new UnauthorizedException('Email and password are required');
     }
 
-    const user = await this.authService.validateUser(username, password);
+    const user = await this.authService.validateUser(email, password);
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');
     }
