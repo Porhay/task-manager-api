@@ -20,30 +20,33 @@ import { AccessUserGuard } from '../auth/guards/access-user.guard';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Tasks')
-@Controller('users/:userId/tasks')
+@Controller('users/:userId/projects/:projectId/tasks')
 @UseGuards(JwtAuthGuard, AccessUserGuard)
 export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
 
   @Post()
   @UsePipes(new ValidationPipe())
-  async create(@Body() createTaskDto: CreateTaskDto): Promise<Task> {
-    return this.tasksService.create(createTaskDto);
+  async create(
+    @Param('userId') userId: string,
+    @Body() createTaskDto: CreateTaskDto,
+  ): Promise<Task> {
+    return this.tasksService.create({ userId, ...createTaskDto });
   }
 
   @Get()
   async findAll(
     @Param('userId') userId: string,
+    @Param('projectId') projectId: string,
     @Query('status') status: string,
-    @Query('projectId') projectId: string,
     @Query('sortBy') sortBy: string,
     @Query('order') order: string,
     @Query('createdAt') createdAt: Date,
   ): Promise<Task[]> {
     const filter = {
-      userId: userId,
+      userId,
+      projectId,
       ...(status && { status }),
-      ...(projectId && { project: projectId }),
       ...(createdAt && { createdAt: { $gte: new Date(createdAt) } }),
     };
     const sort = sortBy ? { [sortBy]: order === 'desc' ? -1 : 1 } : {};

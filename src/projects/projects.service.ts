@@ -11,13 +11,16 @@ export class ProjectsService {
     @InjectModel(Project.name) private projectModel: Model<Project>,
   ) {}
 
-  async create(createProjectDto: CreateProjectDto): Promise<Project> {
-    const project = new this.projectModel(createProjectDto);
+  async create(
+    userId: string,
+    createProjectDto: CreateProjectDto,
+  ): Promise<Project> {
+    const project = new this.projectModel({ userId, ...createProjectDto });
     return project.save();
   }
 
-  async findAll(): Promise<Project[]> {
-    return this.projectModel.find().exec();
+  async findAllByUserId(userId: string): Promise<Project[]> {
+    return this.projectModel.find({ userId }).exec();
   }
 
   async findOne(id: string): Promise<Project> {

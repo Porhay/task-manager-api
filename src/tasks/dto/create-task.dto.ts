@@ -2,7 +2,7 @@ import { IsString, IsNotEmpty, IsEnum } from 'class-validator';
 
 export enum TaskStatus {
   New = 'new',
-  InProgress = 'in progress',
+  InProgress = 'in_progress',
   Completed = 'completed',
 }
 
@@ -22,4 +22,8 @@ export class CreateTaskDto {
   @IsString()
   @IsNotEmpty()
   projectId: string;
+
+  @IsString()
+  @IsNotEmpty()
+  userId: string;
 }

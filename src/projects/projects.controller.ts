@@ -25,28 +25,34 @@ export class ProjectsController {
 
   @Post()
   @UsePipes(new ValidationPipe())
-  create(@Body() createProjectDto: CreateProjectDto) {
-    return this.projectsService.create(createProjectDto);
+  create(
+    @Param('userId') userId: string,
+    @Body() createProjectDto: CreateProjectDto,
+  ) {
+    return this.projectsService.create(userId, createProjectDto);
   }
 
   @Get()
-  findAll() {
-    return this.projectsService.findAll();
+  findAllByUserId(@Param('userId') userId: string) {
+    return this.projectsService.findAllByUserId(userId);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.projectsService.findOne(id);
+  @Get(':projectId')
+  findOne(@Param('projectId') projectId: string) {
+    return this.projectsService.findOne(projectId);
   }
 
-  @Patch(':id')
+  @Patch(':projectId')
   @UsePipes(new ValidationPipe())
-  update(@Param('id') id: string, @Body() updateProjectDto: UpdateProjectDto) {
-    return this.projectsService.update(id, updateProjectDto);
+  update(
+    @Param('projectId') projectId: string,
+    @Body() updateProjectDto: UpdateProjectDto,
+  ) {
+    return this.projectsService.update(projectId, updateProjectDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.projectsService.remove(id);
+  @Delete(':projectId')
+  remove(@Param('projectId') projectId: string) {
+    return this.projectsService.remove(projectId);
   }
 }

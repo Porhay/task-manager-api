@@ -6,6 +6,9 @@ export type ProjectDocument = Project & Document;
 @Schema()
 export class Project {
   @Prop({ required: true })
+  userId: string;
+
+  @Prop({ required: true })
   name: string;
 
   @Prop()

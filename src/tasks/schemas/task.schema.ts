@@ -8,14 +8,17 @@ export class Task {
   @Prop({ required: true })
   title: string;
 
-  @Prop()
-  description: string;
+  @Prop({ required: true })
+  projectId: string;
+
+  @Prop({ required: true })
+  userId: string;
 
   @Prop({ required: true })
   status: string;
 
-  @Prop({ required: true })
-  projectId: string;
+  @Prop()
+  description: string;
 
   @Prop({ default: Date.now })
   createdAt: Date;
