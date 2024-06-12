@@ -31,7 +31,7 @@ export class TasksController {
     @Param('userId') userId: string,
     @Body() createTaskDto: CreateTaskDto,
   ): Promise<Task> {
-    return this.tasksService.create({ userId, ...createTaskDto });
+    return this.tasksService.create(userId, createTaskDto);
   }
 
   @Get()

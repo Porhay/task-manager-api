@@ -17,7 +17,7 @@ export class TasksService {
     @InjectModel(Project.name) private projectModel: Model<Project>,
   ) {}
 
-  async create(dto: CreateTaskDto): Promise<Task> {
+  async create(userId: string, dto: CreateTaskDto): Promise<Task> {
     // Validate projectId format
     if (!Types.ObjectId.isValid(dto.projectId)) {
       throw new BadRequestException(`Invalid projectId: ${dto.projectId}`);
@@ -29,7 +29,7 @@ export class TasksService {
         `Project not found, projectId:${dto.projectId} `,
       );
     }
-    const task = new this.taskModel({ ...dto });
+    const task = new this.taskModel({ userId, ...dto });
     return task.save();
   }
 
