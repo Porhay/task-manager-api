@@ -6,15 +6,24 @@ import {
   Param,
   Delete,
   UseGuards,
+  Req,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { UserDocument } from './schemas/user.schema';
+import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
+import { AccessUserGuard } from 'src/auth/guards/access-user.guard';
+
+interface AuthenticatedRequest extends Request {
+  user: UserDocument;
+}
 
 @ApiTags('Users')
 @ApiBearerAuth()
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, AccessUserGuard)
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
@@ -23,26 +32,29 @@ export class UsersController {
     status: 200,
     description: 'Returns user object without password',
   })
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.usersService.findOneById(id);
+  @Get(':userId')
+  findOne(@Param('userId') userId: string) {
+    return this.usersService.findOneById(userId);
   }
 
   @ApiResponse({
     status: 200,
     description: 'Updates the user',
   })
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(id, updateUserDto);
+  @Patch(':userId')
+  update(
+    @Param('userId') userId: string,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
+    return this.usersService.update(userId, updateUserDto);
   }
 
   @ApiResponse({
     status: 200,
     description: 'Deletes the user',
   })
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(id);
+  @Delete(':userId')
+  remove(@Param('userId') userId: string) {
+    return this.usersService.remove(userId);
   }
 }

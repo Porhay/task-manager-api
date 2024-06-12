@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
 import { UsersService } from '../users/users.service';
@@ -24,6 +24,16 @@ export class AuthService {
     const payload = { email: user.email, userId: user._id.toString() };
     const tokens = this.genTokens(payload);
     return { ...tokens, ...payload };
+  }
+
+  async refreshTokens(refreshToken: string) {
+    try {
+      const decoded = this.jwtService.verify(refreshToken);
+      const payload = { email: decoded.email, userId: decoded.userId };
+      return this.genTokens(payload);
+    } catch (e) {
+      throw new UnauthorizedException('Invalid refresh token');
+    }
   }
 
   /**
