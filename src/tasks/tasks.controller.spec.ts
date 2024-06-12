@@ -9,8 +9,9 @@ describe('TasksController', () => {
   let service: TasksService;
 
   const mockTasksService = {
-    create: jest.fn().mockImplementation((userId, dto) => ({
+    create: jest.fn().mockImplementation((userId, projectId, dto) => ({
       userId,
+      projectId,
       ...dto,
       id: 'someTaskId',
     })),
@@ -72,10 +73,15 @@ describe('TasksController', () => {
         await controller.create('someUserId', 'someProjectId', dto),
       ).toEqual({
         userId: 'someUserId',
+        projectId: 'someProjectId',
         ...dto,
         id: 'someTaskId',
       });
-      expect(service.create).toHaveBeenCalledWith('someUserId', dto);
+      expect(service.create).toHaveBeenCalledWith(
+        'someUserId',
+        'someProjectId',
+        dto,
+      );
     });
   });
 
