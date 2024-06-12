@@ -10,6 +10,9 @@ export class Project {
 
   @Prop()
   description: string;
+
+  @Prop({ default: Date.now })
+  createdAt: Date;
 }
 
 export const ProjectSchema = SchemaFactory.createForClass(Project);

@@ -24,7 +24,7 @@
 Task requirements can be found [here](REQUIREMENTS)
 
 
-## Check it out: https://task-manager-api.onrender.com
+## Check it out: https://task-manager-api-o14f.onrender.com
 ###### ▶ (note that app use free instance that spins down with inactivity that can delay first request by 50+ seconds)
 
 
@@ -32,7 +32,7 @@ Task requirements can be found [here](REQUIREMENTS)
 ###### Could be found by next URL:
 ```sh
 $ http://localhost:8001/ # Local environment
-$ https://task-manager-api.onrender.com # Production
+$ https://task-manager-api-o14f.onrender.com # Production
 ```
 
 
@@ -42,11 +42,11 @@ $ https://task-manager-api.onrender.com # Production
 1. Create a new user
 
 ```bash
-  curl --location 'https://task-manager-api.onrender.com/api/auth/register' \
+  curl --location 'https://task-manager-api-o14f.onrender.com/api/auth/register' \
   --header 'Content-Type: application/json' \
   --data '{
-      "username": "User1",
-      "password": "123"
+      "email": "user_100@mail.com",
+      "password": "123123"
   }'
 ```
 

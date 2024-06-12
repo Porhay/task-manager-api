@@ -6,20 +6,13 @@ import {
   Param,
   Delete,
   UseGuards,
-  Req,
-  UnauthorizedException,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { UserDocument } from './schemas/user.schema';
-import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
 import { AccessUserGuard } from 'src/auth/guards/access-user.guard';
-
-interface AuthenticatedRequest extends Request {
-  user: UserDocument;
-}
 
 @ApiTags('Users')
 @ApiBearerAuth()
