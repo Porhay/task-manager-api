@@ -10,34 +10,40 @@ import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post('register')
   @ApiResponse({
     status: 201,
     description: 'Creates a user and respond with JWT token',
     schema: {
       type: 'object',
       properties: {
-        access_token: { type: 'string' },
+        accessToken: { type: 'string' },
+        refreshToken: { type: 'string' },
+        userId: { type: 'string' },
+        email: { type: 'string' },
       },
     },
   })
+  @Post('register')
   async register(@Body() createUserDto: CreateUserDto) {
     return this.authService.register(createUserDto);
   }
 
-  @Post('login')
-  @UseGuards(LocalAuthGuard)
   @ApiBody({ type: CreateUserDto })
   @ApiResponse({
     status: 201,
-    description: 'Respond with JWT token',
+    description: 'Respond with JWT tokens and user data',
     schema: {
       type: 'object',
       properties: {
-        access_token: { type: 'string' },
+        accessToken: { type: 'string' },
+        refreshToken: { type: 'string' },
+        userId: { type: 'string' },
+        email: { type: 'string' },
       },
     },
   })
+  @UseGuards(LocalAuthGuard)
+  @Post('login')
   async login(@Req() req: Request) {
     return this.authService.login(req.user);
   }

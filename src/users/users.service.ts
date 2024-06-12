@@ -29,11 +29,13 @@ export class UsersService {
       password: hashedPassword,
     });
     this.logger.log(`New user created, id: ${user.id}`);
-    return user.save();
+    const savedUser = await user.save();
+    return savedUser.toObject();
   }
 
-  async findOneByEmail(email: string): Promise<User | undefined> {
-    return this.userModel.findOne({ email }).exec();
+  async findOneByEmail(email: string): Promise<UserDocument | undefined> {
+    const user = await this.userModel.findOne({ email }).exec();
+    return user.toObject();
   }
 
   async findOneById(id: string): Promise<User | undefined> {
@@ -41,7 +43,7 @@ export class UsersService {
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    return user;
+    return user.toObject();
   }
 
   async update(userId: string, updateUserDto: UpdateUserDto): Promise<User> {
@@ -52,7 +54,7 @@ export class UsersService {
       throw new NotFoundException('User not found');
     }
     this.logger.log(`User updated, id: ${updatedUser.id}`);
-    return updatedUser;
+    return updatedUser.toObject();
   }
 
   async remove(userId: string): Promise<void> {

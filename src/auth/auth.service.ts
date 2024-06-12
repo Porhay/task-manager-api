@@ -3,7 +3,6 @@ import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
 import { UsersService } from '../users/users.service';
 import { CreateUserDto } from '../users/dto/create-user.dto';
-import { AuthDto } from './dto/auth.dto';
 import { UserDocument } from 'src/users/schemas/user.schema';
 
 @Injectable()
@@ -16,20 +15,23 @@ export class AuthService {
   async register(user: CreateUserDto) {
     const dbUser = await this.usersService.create(user);
 
-    // generate jwt token
-    const payload = { email: dbUser.email, userId: dbUser.id };
-    const accessToken = this.jwtService.sign(payload);
-
-    return { accessToken: accessToken };
+    const payload = { email: dbUser.email, userId: dbUser._id.toString() };
+    const tokens = this.genTokens(payload);
+    return { ...tokens, ...payload };
   }
 
   async login(user: UserDocument) {
-    const payload = { email: user.email, userId: user.id };
-    return {
-      access_token: this.jwtService.sign(payload),
-    };
+    const payload = { email: user.email, userId: user._id.toString() };
+    const tokens = this.genTokens(payload);
+    return { ...tokens, ...payload };
   }
 
+  /**
+   * Check if user exist, compare password.
+   * @param email: string
+   * @param pass: string
+   * @returns Promise<User> | null
+   */
   async validateUser(email: string, pass: string): Promise<any> {
     const user = await this.usersService.findOneByEmail(email);
     if (user && (await bcrypt.compare(pass, user.password))) {
@@ -39,10 +41,15 @@ export class AuthService {
     return null;
   }
 
-  private async validateToken(token: string) {
-    return this.jwtService.verify(token);
-  }
-  private async signToken(payload: { email: string; userId: string }) {
-    return this.jwtService.sign(payload);
+  private genTokens(payload: { email: string; userId: string }) {
+    const accessToken = this.jwtService.sign(payload, {
+      expiresIn: '1d',
+    });
+
+    const refreshToken = this.jwtService.sign(payload, {
+      expiresIn: '30d',
+    });
+
+    return { accessToken, refreshToken };
   }
 }
