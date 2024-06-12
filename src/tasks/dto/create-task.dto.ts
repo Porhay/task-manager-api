@@ -22,11 +22,4 @@ export class CreateTaskDto {
   @IsNotEmpty()
   @IsEnum(TaskStatus)
   status: TaskStatus;
-
-  @ApiProperty({
-    description: 'The ID of the project to which the task belongs',
-  })
-  @IsString()
-  @IsNotEmpty()
-  projectId: string;
 }

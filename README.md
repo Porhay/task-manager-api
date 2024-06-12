@@ -65,7 +65,7 @@ $ https://task-manager-api-o14f.onrender.com # Production
 3. Create a new task
 
 ```bash
-  curl --location 'http://localhost:8001/api/users/6669c0c849dc111f981c3191/projects/:projectId/tasks' \
+  curl --location 'http://localhost:8001/api/users/6669c0c849dc111f981c3191/projects/666a1b880f8bf34c534b394c/tasks' \
   --header 'Content-Type: application/json' \
   --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXJfMUBtYWlsLmNvbSIsInVzZXJJZCI6IjY2NjljMGM4NDlkYzExMWY5ODFjMzE5MSIsImlhdCI6MTcxODIyNzYxMCwiZXhwIjoxNzE4MzE0MDEwfQ.QDUa1i_KGHbADLghEMmvSuj4m2DwI2vahCmM9kCZJM0' \
   --data '{

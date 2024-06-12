@@ -44,9 +44,10 @@ export class TasksController {
   @ApiBody({ type: CreateTaskDto })
   async create(
     @Param('userId') userId: string,
+    @Param('projectId') projectId: string,
     @Body() createTaskDto: CreateTaskDto,
   ): Promise<Task> {
-    return this.tasksService.create(userId, createTaskDto);
+    return this.tasksService.create(userId, projectId, createTaskDto);
   }
 
   @Get()

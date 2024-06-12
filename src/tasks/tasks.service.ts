@@ -17,19 +17,21 @@ export class TasksService {
     @InjectModel(Project.name) private projectModel: Model<Project>,
   ) {}
 
-  async create(userId: string, dto: CreateTaskDto): Promise<Task> {
+  async create(
+    userId: string,
+    projectId: string,
+    dto: CreateTaskDto,
+  ): Promise<Task> {
     // Validate projectId format
-    if (!Types.ObjectId.isValid(dto.projectId)) {
-      throw new BadRequestException(`Invalid projectId: ${dto.projectId}`);
+    if (!Types.ObjectId.isValid(projectId)) {
+      throw new BadRequestException(`Invalid projectId: ${projectId}`);
     }
 
-    const project = await this.projectModel.findById(dto.projectId).exec();
+    const project = await this.projectModel.findById(projectId).exec();
     if (!project) {
-      throw new NotFoundException(
-        `Project not found, projectId:${dto.projectId} `,
-      );
+      throw new NotFoundException(`Project not found, projectId:${projectId} `);
     }
-    const task = new this.taskModel({ userId, ...dto });
+    const task = new this.taskModel({ userId, projectId, ...dto });
     return task.save();
   }
 

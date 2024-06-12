@@ -20,8 +20,8 @@ import {
   ApiResponse,
   ApiBody,
 } from '@nestjs/swagger';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { AccessUserGuard } from 'src/auth/guards/access-user.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { AccessUserGuard } from '../auth/guards/access-user.guard';
 import { Project } from './schemas/projects.schema';
 
 @ApiTags('Projects')
