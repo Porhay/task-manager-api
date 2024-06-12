@@ -1,0 +1,17 @@
+General:
+- Your task is to develop a task management system with collaboration and project management features.
+
+Implement:
+1. User registration and authentication.
+2. Creation, reading, updating, and deletion of tasks.
+3. Setting the status for each task (e.g., "New," "In Progress," "Completed").
+4. Creating projects and adding tasks to projects.
+5. Viewing the task list with filtering and sorting capabilities by various parameters (status, creation date, project).
+
+Requirements:
+1. Use Nest.js, TypeScript, and MongoDB for developing the API and data storage.
+2. Implement authentication using JWT tokens.
+3. Implement data validation at the server level.
+4. Ensure API testing using the Jest framework.
+5. Implement error handling and return appropriate status codes.
+6. Document your API using Swagger.
