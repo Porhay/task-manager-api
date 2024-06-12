@@ -1,4 +1,5 @@
 import { IsString, IsNotEmpty, IsEnum } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
 
 export enum TaskStatus {
   New = 'new',
@@ -7,18 +8,24 @@ export enum TaskStatus {
 }
 
 export class CreateTaskDto {
+  @ApiProperty({ description: 'The title of the task' })
   @IsString()
   @IsNotEmpty()
   title: string;
 
+  @ApiProperty({ description: 'The description of the task' })
   @IsString()
   description: string;
 
+  @ApiProperty({ description: 'The status of the task', enum: TaskStatus })
   @IsString()
   @IsNotEmpty()
   @IsEnum(TaskStatus)
   status: TaskStatus;
 
+  @ApiProperty({
+    description: 'The ID of the project to which the task belongs',
+  })
   @IsString()
   @IsNotEmpty()
   projectId: string;
