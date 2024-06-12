@@ -21,7 +21,7 @@ async function bootstrap() {
       'This is simple RESTful products API protected with JWT token authentication',
     )
     .addServer(`http://localhost:${port}/`, 'Local environment')
-    .addServer('https://task-manager-api.onrender.com', 'Production')
+    .addServer('https://task-manager-api-o14f.onrender.com', 'Production')
     .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, options);

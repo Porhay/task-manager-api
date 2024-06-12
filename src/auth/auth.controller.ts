@@ -11,13 +11,14 @@ import {
 import { AuthService } from './auth.service';
 import { CreateUserDto } from '../users/dto/create-user.dto';
 import { LocalAuthGuard } from './guards/local-auth.guard';
-import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @Controller('auth')
 @ApiTags('Auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @ApiOperation({ summary: 'Register a new user' })
   @ApiResponse({
     status: 201,
     description: 'Creates a user and respond with JWT token',
@@ -36,6 +37,7 @@ export class AuthController {
     return this.authService.register(createUserDto);
   }
 
+  @ApiOperation({ summary: 'Login a new user' })
   @ApiBody({ type: CreateUserDto })
   @ApiResponse({
     status: 201,
@@ -56,6 +58,9 @@ export class AuthController {
     return this.authService.login(req.user);
   }
 
+  @ApiOperation({
+    summary: 'Refres access JWT token with provided refresh token',
+  })
   @Post('refresh-token')
   async refresh(@Req() req: Request) {
     const refreshToken = req.body.refreshToken;

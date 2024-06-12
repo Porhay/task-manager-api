@@ -24,7 +24,7 @@
 Task requirements can be found [here](REQUIREMENTS)
 
 
-## Check it out: https://task-manager-api.onrender.com
+## Check it out: https://task-manager-api-o14f.onrender.com
 ###### ▶ (note that app use free instance that spins down with inactivity that can delay first request by 50+ seconds)
 
 
@@ -32,7 +32,7 @@ Task requirements can be found [here](REQUIREMENTS)
 ###### Could be found by next URL:
 ```sh
 $ http://localhost:8001/ # Local environment
-$ https://task-manager-api.onrender.com # Production
+$ https://task-manager-api-o14f.onrender.com # Production
 ```
 
 
@@ -42,12 +42,45 @@ $ https://task-manager-api.onrender.com # Production
 1. Create a new user
 
 ```bash
-  curl --location 'https://task-manager-api.onrender.com/api/auth/register' \
+  curl --location 'http://localhost:8001/api/auth/register' \
   --header 'Content-Type: application/json' \
   --data '{
-      "username": "User1",
-      "password": "123"
+      "email": "user_100@mail.com",
+      "password": "123123"
   }'
+```
+
+2. Create a new project
+
+```bash
+  curl --location 'http://localhost:8001/api/users/6669c0c849dc111f981c3191/projects' \
+  --header 'Content-Type: application/json' \
+  --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXJfMUBtYWlsLmNvbSIsInVzZXJJZCI6IjY2NjljMGM4NDlkYzExMWY5ODFjMzE5MSIsImlhdCI6MTcxODIyNzYxMCwiZXhwIjoxNzE4MzE0MDEwfQ.QDUa1i_KGHbADLghEMmvSuj4m2DwI2vahCmM9kCZJM0' \
+  --data '{
+      "name": "project name",
+      "description": "project description"
+  }'
+```
+
+3. Create a new task
+
+```bash
+  curl --location 'http://localhost:8001/api/users/6669c0c849dc111f981c3191/projects/666a1b880f8bf34c534b394c/tasks' \
+  --header 'Content-Type: application/json' \
+  --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXJfMUBtYWlsLmNvbSIsInVzZXJJZCI6IjY2NjljMGM4NDlkYzExMWY5ODFjMzE5MSIsImlhdCI6MTcxODIyNzYxMCwiZXhwIjoxNzE4MzE0MDEwfQ.QDUa1i_KGHbADLghEMmvSuj4m2DwI2vahCmM9kCZJM0' \
+  --data '{
+      "title": "task_100",
+      "description": "description",
+      "status": "new",
+      "projectId": "666a1b880f8bf34c534b394c"
+  }'
+```
+
+4. Get tasks with filter
+
+```bash
+  curl --location 'http://localhost:8001/api/users/6669c0c849dc111f981c3191/projects/666a1b880f8bf34c534b394c/tasks?status=in_progress' \
+  --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXJfMUBtYWlsLmNvbSIsInVzZXJJZCI6IjY2NjljMGM4NDlkYzExMWY5ODFjMzE5MSIsImlhdCI6MTcxODIyNzYxMCwiZXhwIjoxNzE4MzE0MDEwfQ.QDUa1i_KGHbADLghEMmvSuj4m2DwI2vahCmM9kCZJM0' \
 ```
 
 </details>
