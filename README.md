@@ -38,7 +38,7 @@ $ https://task-manager-api-o14f.onrender.com # Production
 
 ## Basic test case
 <details>
-<summary>Create a new user</summary>
+<summary>Create a new user, add project and task, get all tasks with filter</summary>
 1. Create a new user
 
 ```bash
